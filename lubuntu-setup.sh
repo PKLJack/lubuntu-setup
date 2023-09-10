@@ -84,10 +84,10 @@ lvcreate --yes --size 12GiB --name lv_root vg_root /dev/sdb2
 lvcreate --yes --size 8GiB --name lv_home vg_root /dev/sda1
 lvcreate --yes --size 10GiB --name lv_var vg_root /dev/sda1
 
-# # Make file systems on logical volumes
-# mkfs.ext4 -q /dev/mapper/vg_root-lv_home
-# mkfs.ext4 -q /dev/mapper/vg_root-lv_root
-# mkfs.ext4 -q /dev/mapper/vg_root-lv_var
+# Make file systems on logical volumes
+mkfs.ext4 -q /dev/mapper/vg_root-lv_home
+mkfs.ext4 -q /dev/mapper/vg_root-lv_root
+mkfs.ext4 -q /dev/mapper/vg_root-lv_var
 
 
 echo '#########################'
