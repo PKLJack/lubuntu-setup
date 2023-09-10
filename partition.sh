@@ -1,21 +1,7 @@
-# Lubuntu setup script
+# Step - Partition
 # 
 
 set -eux -o pipefail
-
-echo '#########################'
-echo '# Clean up'
-echo '#########################'
-
-# Reset LVM
-lvdisplay -c | cut -d ':' -f 1 | xargs -r lvremove -f # `-f` flag needed
-vgdisplay -c | cut -d ':' -f 1 | xargs -r vgremove
-pvdisplay --separator=':' --columns --noheadings | cut -d ':' -f 1 | xargs -r pvremove
-
-# Reset devices
-wipefs --all /dev/sdb
-wipefs --all /dev/sda
-
 
 echo '#########################'
 echo '# partition table'
@@ -65,32 +51,3 @@ mkfs.vfat -F 32 /dev/sdb1
 # mkfs.ext4 /dev/sdb2
 
 # parted --script /dev/sdb -- p
-
-
-echo '#########################'
-echo '# LVM Stuff'
-echo '#########################'
-
-
-# Physical Volumes
-pvcreate /dev/sdb2 /dev/sda1
-
-#  Volume Groups
-vgcreate vg_root /dev/sdb2 /dev/sda1
-
-# Logical Volumes
-echo 'VM testing'
-lvcreate --yes --size 12GiB --name lv_root vg_root /dev/sdb2
-lvcreate --yes --size 8GiB --name lv_home vg_root /dev/sda1
-lvcreate --yes --size 10GiB --name lv_var vg_root /dev/sda1
-
-# Make file systems on logical volumes
-mkfs.ext4 -q /dev/mapper/vg_root-lv_home
-mkfs.ext4 -q /dev/mapper/vg_root-lv_root
-mkfs.ext4 -q /dev/mapper/vg_root-lv_var
-
-
-echo '#########################'
-echo '# Finish'
-echo '#########################'
-echo 'Done, now move to GUI installer!'
