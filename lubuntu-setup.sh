@@ -1,3 +1,7 @@
+# Lubuntu setup script
+# 
+
+set -eux -o pipefail
 
 echo '#########################'
 echo '# Reset devices'
