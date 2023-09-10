@@ -4,8 +4,15 @@
 set -eux -o pipefail
 
 echo '#########################'
-echo '# Reset devices'
+echo '# Clean up'
 echo '#########################'
+
+# Reset LVM
+lvdisplay -c | cut -d ':' -f 1 | xargs lvremove -f # `-f` flag needed
+vgdisplay -c | cut -d ':' -f 1 | xargs vgremove
+pvdisplay --separator=':' --columns --noheadings | cut -d ':' -f 1 | xargs pvremove
+
+# Reset devices
 wipefs --all /dev/sdb
 wipefs --all /dev/sda
 
