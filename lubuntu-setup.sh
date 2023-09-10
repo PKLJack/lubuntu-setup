@@ -1,23 +1,23 @@
 
-#########################
-# Reset devices
-#########################
+echo '#########################'
+echo '# Reset devices'
+echo '#########################'
 wipefs --all /dev/sdb
 wipefs --all /dev/sda
 
 
-#########################
-# partition table
-#########################
+echo '#########################'
+echo '# partition table'
+echo '#########################'
 parted /dev/sda -- mktable gpt
 parted /dev/sdb -- mktable gpt
 
 # parted /dev/sda -- p ; parted /dev/sdb -- p
 
 
-#########################
-# Make partitions
-#########################
+echo '#########################'
+echo '# Make partitions'
+echo '#########################'
 # HDD
 parted /dev/sda -- mkpart 'hdd' ext4 0% 100%
 
@@ -28,9 +28,9 @@ parted /dev/sdb -- mkpart 'root' ext4 301MiB 100%
 # parted /dev/sda -- p ; parted /dev/sdb -- p
 
 
-#########################
-# Set flags
-#########################
+echo '#########################'
+echo '# Set flags'
+echo '#########################'
 
 # sda1
 parted /dev/sda -- set 1 lvm on
@@ -45,9 +45,9 @@ parted /dev/sdb -- set 2 lvm on
 # parted /dev/sda -- p ; parted /dev/sdb -- p
 
 
-#########################
-# Make file systems
-#########################
+echo '#########################'
+echo '# Make file systems'
+echo '#########################'
 echo 'Keep /dev/sda1 without file system.'
 
 mkfs.vfat -F 32 /dev/sdb1
@@ -56,9 +56,9 @@ mkfs.vfat -F 32 /dev/sdb1
 # parted /dev/sdb -- p
 
 
-#########################
-# LVM Stuff
-#########################
+echo '#########################'
+echo '# LVM Stuff'
+echo '#########################'
 
 
 # Physical Volumnes
@@ -79,7 +79,7 @@ mkfs.ext4 /dev/mapper/vg_root-lv_root
 mkfs.ext4 /dev/mapper/vg_root-lv_var
 
 
-#########################
-# Finish
-#########################
+echo '#########################'
+echo '# Finish'
+echo '#########################'
 echo 'Done, now move to GUI installer!'
